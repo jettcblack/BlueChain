@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Configuring the BlueChain Network</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="https://cdn.jsdelivr.net/gh/jettcblack/bluevision-css@main/styles.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+        <style>
+          .bg-dark{
+            background-color:black !important;
+        } 
+
+        .navbar-brand {
+            font-family: 'Montserrat',sans-serif;
+        }
+        .mt-5 {
+          margin-top: 2rem !important;
+          font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-text {
+          margin-top: 2rem;
+        }
+
+        .about {
+          background-color: #efefef;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 18px;
+          text-align: left;
+          margin-top: 20px;
+          border-top: 1px solid black;
+          margin-bottom: 20px;
+          border-bottom: 1px solid black;
+        }
+
+        ul {
+          font-size: 16px;
+        }
+        </style>
+    </head>
+
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">BLUEVISION</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <!--<li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">BlueEdu</a></li>
+                                <li><a class="dropdown-item" href="https://rose-hickory-85b.notion.site/188eac4957ab4f8aada97e663edd54dc?v=712efdcd77be4c7ebe7916b82ff9afa7">BlueChain Docs</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="index.html">Home</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container">
+            <div class="text-center mt-5">
+                <h1>configuring the bluechain network</h1>
+                <form class="form-text">       
+                  <p style="font-size: 18px;">How many nodes do you want in the network?</p>
+                    <input type="text" id="nodeCount" class="form-label" name="nodes" placeholder="Node Count" required="" autofocus=""/>
+                    <br>
+                    <a id="launchButton" class="btn btn-lg btn-primary btn-block" class="button">Launch Network</a>  
+                    <script>
+                      document.getElementById("launchButton").addEventListener("click", function() {
+                        const numNodes = document.getElementById("nodeCount").value;
+                        fetch('http://localhost:3000/run-script', {
+                          method: 'POST', 
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify({ numNodes: numNodes }), 
+                        })
+                        .then(response => response.text())
+                        .then(data => console.log(data))
+                        .catch((error) => {
+                          console.error('Error:', error);
+                        });
+                  
+                        setTimeout(function() {
+                          window.location.href = "live.html";
+                        }, 20000);  // 20000 milliseconds = 20 seconds
+                      });
+                    </script>
+                  </form>
+            </div>
+        </div>
+        
+        <!-- About info-->
+        <div class="about">
+          <p style="font-size: 22px; margin-top: 10px; margin-left: 500px;"><b>Information</b></p>
+          <p style="margin-left: 500px;">How are other configurations set?</p>
+          <ul style="margin-left: 500px;">
+            <li><b>Number of quorum members:</b> square root of # of nodes, rounded down</li>
+            <li><b>Number of maximum transactions:</b> floor of half of the # of nodes</li>
+            <li><b>Number of minimum transactions:</b> maximum transactions - 5</li>
+          </ul>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="https://cdn.jsdelivr.net/gh/jettcblack/bluevision-css@main/scripts.js"></script>
+    </body>
+</html>

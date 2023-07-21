@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Configuring the BlueChain Network</title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="https://cdn.jsdelivr.net/gh/jettcblack/bluevision-css@main/styles.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <style>
+
+    body {
+      overflow:hidden;
+    }
+   /* .links line {
+      stroke: grey; 
+      stroke-opacity: 0.6;
+    } */ 
+    
+    .nodes circle {
+      stroke: #ffffff;
+      stroke-width: 1.5px;
+      filter: drop-shadow(0 0 2.5px #111111);
+    }
+
+    .container-flex {
+      display: flex;
+      height: 50vh; /* adjust as needed, this is just an example */
+    }
+
+    @media (min-width: 576px) {
+      .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 768px) {
+      .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 992px) {
+      .container-lg, .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 1200px) {
+      .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 1400px) {
+      .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+
+    .text-center {
+      margin-top:1rem; 
+    }
+
+    
+    .container {
+      padding-left: 100px;
+      padding-right: 100px;
+      text-align: left;
+    }
+
+    .container-button {
+      text-align: right;
+    }
+
+    .container-flex {
+      display: grid !important; 
+      grid-template-columns: 1fr 2fr 1fr !important; /* This will give two small spaces at the sides and a large space in the middle */
+      height: 60vh !important; /* adjust as needed */
+    }
+
+    .table {
+      width: 100%;
+      grid-column: 1 !important; /* position it in the first column */
+      overflow:auto !important; /* makes it scrollable if the content overflows */
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .table::-webkit-scrollbar {
+      display:none; 
+    }
+
+    #transactionTable {
+      width:100% !important; 
+    }
+
+    .container-svg {
+      grid-column: 2 !important; /* position it in the second (middle) column */
+    }
+
+    .key-panel {
+        display: grid; 
+        flex-direction: column;
+        justify-content: center;
+        font-family: 'Montserrat', sans-serif;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+
+    .key-panel table {
+        grid-column: 3 !important; 
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+    }
+
+    .key-panel th, .key-panel td {
+        padding: 10px;
+    }
+
+    .key-panel td svg {
+        margin: auto;  /* Center the gradient rectangles in their cells */
+    }
+    .container-svg {
+      height:55vh; 
+      padding-top: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-self: center; 
+      overflow: visible; 
+    }
+
+    .container-svg-ledger {
+      height:25vh; 
+      padding-top: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-self: center; 
+      overflow: visible; 
+      grid-column: span 3;
+      padding-left: 0;
+    }
+
+    .flex-item {
+      margin-top: 5px;
+    }
+
+    #svg-graph {
+      transform: scale(2);
+    }
+
+
+    .block-label {
+      font-family:'Montserrat', sans-serif;
+      font-size: 15px; /* Adjust as needed */
+    }
+
+    .hash-label {
+      font-family:'Montserrat', sans-serif;
+      font-size: 15px; /* Adjust as needed */
+    }
+
+    .tx-label {
+      font-family:'Montserrat', sans-serif;
+      font-size: 15px; /* Adjust as needed */
+    }
+
+
+    
+    .block {
+      fill: white; 
+      stroke: #333333;
+      stroke-width: 2px;
+      rx: 2px;  /* Add horizontal radius for rounded edges */
+      transition: fill 0.3s ease;
+      
+    }
+
+    #blocks-svg {
+      filter: drop-shadow(0 0 2px #969696);
+      overflow: visible; 
+    }
+    
+    
+    .block:hover {
+      fill: #00d4ff; 
+    }
+
+    .centered {
+      text-align: center;
+    }
+
+
+    .table-container {
+      height:100px;
+    }
+
+    #table-body {
+      overflow:scroll;
+    }
+    
+    #tableBody tr:first-child {
+      background-color: #98FB98;
+    }
+
+    .mt-5 {
+      margin-top: 0 !important;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bg-dark{
+      background-color:black !important;
+    } 
+    .navbar-brand {
+      font-family: 'Montserrat',sans-serif;
+    }
+    
+    text {
+      font-family: 'Montserrat', sans-serif !important;
+      font-size: 10px;
+      user-select: none;  /* This will prevent text from being selected */
+      cursor: default;
+    }
+
+    /* Toggle text styling */
+    .hidden-text {
+      display: none;
+    }
+
+    #toggleButton {
+      margin-top: 15px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    #toggleTextTable {
+      font-size: 14px;
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+    }
+
+    #toggleTextKey {
+      font-size: 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: bold;
+      fill: black;
+    }
+
+    #toggleTextLedger {
+      font-size: 14px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    #toggleTextGraph {
+      font-size: 14px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+  </style>
+</head>
+<body>
+  <!-- Responsive navbar-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">BLUEVISION</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#">BlueEdu</a></li>
+              <li><a class="dropdown-item" href="https://rose-hickory-85b.notion.site/188eac4957ab4f8aada97e663edd54dc?v=712efdcd77be4c7ebe7916b82ff9afa7">BlueChain Docs</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="index.html">Home</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Page content-->
+  <div class="container">
+    <div class="container-button"><button id="toggleButton">Hide Informative Text</button></div>
+    <div class="text-center mt-5">
+      <h1>bluechain</h1>
+    </div>
+    <div class="container-flex">
+      <text x="10" y="100" id="toggleTextTable">NOTE: Hover over the table to scroll through transactions.</text>
+      <div class="table">
+          <table id="transactionTable">
+              <thead>
+                  <tr>
+                    <th colspan="5" class="centered">transaction table</th>
+                  </tr> 
+                  <tr>
+                      <th>tx</th>
+                      <th>from</th>
+                      <th>to</th>
+                      <th>amount</th>
+                      <th>timestamp</th>
+                  </tr>
+              </thead>
+              <tbody id="tableBody">
+                  <!-- Rows will be inserted here -->
+              </tbody>
+          </table>
+          <script>
+            let lastLine = 0;
+            
+            function updateTable() {
+                fetch('transactions.ndjson')
+                    .then(response => response.text())
+                    .then(text => {
+                        const lines = text.split('\n').filter(Boolean);  // Split by lines and remove any empty ones
+                        const tableBody = document.getElementById('tableBody');
+            
+                        // Only process lines that haven't been added to the table yet
+                        for (let i = lastLine; i < lines.length; i++) {
+                            const obj = JSON.parse(lines[i]);
+                            const row = document.createElement('tr');
+                            row.style.opacity = "0"; // Initially set opacity to 0
+                            row.innerHTML = `
+                                <td>${obj.transaction}</td>
+                                <td>${obj.from}</td>
+                                <td>${obj.to}</td>
+                                <td>${obj.amount}</td>
+                                <td>${obj.timestamp}</td>
+                            `;
+                            // If there is a first child, insert before it, otherwise appendChild (which will happen when the table is initially empty)
+                            if (tableBody.firstChild) {
+                                tableBody.insertBefore(row, tableBody.firstChild);
+                            } else {
+                                tableBody.appendChild(row);
+                            }
+                            // Use setTimeout to delay the start of the transition slightly, giving the page time to add the new row
+                            setTimeout(() => {
+                                row.style.transition = "opacity 5s"; // Set transition effect
+                                row.style.opacity = "1"; // Transition to full opacity
+                            }, 10);
+                        }
+                        // Update lastLine so we don't re-process old lines next time
+                        lastLine = lines.length;
+                    })
+                    .catch(error => console.error(error));
+            }
+            
+            // Update the table immediately, and then every 5 seconds
+            updateTable();
+            setInterval(updateTable, 5000);
+            </script>
+      </div>
+
+    <div class="container-svg">
+      <p style="margin-left: 100px; margin-right: 100px;" id="toggleTextGraph">NOTE: This is circular layout of the network activity - the quorum members are 
+        colored blue. Hover over a node to see its connections and node ID.</p>
+        <!--<text x="155" y="-27" id="toggleTextGraph"></text>-->
+      <svg id="graph-svg">
+        <defs>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+          </filter>
+      </defs>
+      </svg>
+    </div>
+    <div class="key-panel">      
+      <table>
+        <caption id="toggleTextKey">NOTE: Messages are displayed as lights that go from the source node to the target node. The thin side of color represents the "sending" node, and the thick side represents the "receiving" node.</caption>
+        <thead>
+          <tr>
+            <th colspan="2" class="centered">LEGEND</th>
+          </tr>
+          <tr>
+            <th>message type</th>
+            <th>message color</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>add transaction</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#98FB98"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>quorum ready</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#add8e6"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>ping</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#FFD700"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>receive mempool</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#D8BFD8"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>receive signature</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#FFB6C1"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>receive skeleton</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#DC143C"/>
+              </svg>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    </div>
+    
+  </div>
+
+    <!--Blockchain Ledger-->
+    <div class="container-svg-ledger">
+      <svg id="blocks-svg">
+      </svg>
+      <p style="margin-left: 10px;" id="toggleTextLedger">NOTE: This is a copy of the blockchain ledger held on each node. Select a block to see the state of the network at that block and begin the step-through tool.</p>
+    </div>
+  
+
+  <!-- Include D3 and the graph.js file -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="graph.js"></script>
+  <script src="blockchain.js"></script>
+  <script src="toggle.js"></script>
+  
+
+  <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Core theme JS-->
+  <script src="https://cdn.jsdelivr.net/gh/jettcblack/bluevision-css@main/scripts.js"></script>
+</body>
+</html>
