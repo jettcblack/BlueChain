@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Configuring the BlueChain Network</title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="https://cdn.jsdelivr.net/gh/jettcblack/bluevision-css@main/styles.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <style>
+
+    body {
+      overflow:hidden;
+      background-color: #f0f0f0;
+    }
+   /* .links line {
+      stroke: grey; 
+      stroke-opacity: 0.6;
+    } */ 
+    
+    .nodes circle {
+      stroke: #fff;
+      stroke-width: 1.5px;
+      filter: drop-shadow(0 0 2px #111111);
+    }
+
+    .container-flex {
+      display: flex;
+      height: 50vh; /* adjust as needed, this is just an example */
+    }
+
+    @media (min-width: 576px) {
+      .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 768px) {
+      .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 992px) {
+      .container-lg, .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 1200px) {
+      .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 1400px) {
+      .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+
+    .text-center {
+      margin-top:1rem; 
+    }
+
+    
+    .container {
+      padding-left: 100px;
+      padding-right: 100px;
+    }
+
+    .container-flex {
+      display: flex !important; 
+      grid-template-columns: 1fr 3fr 1fr !important; /* This will give two small spaces at the sides and a large space in the middle */
+      height: 60vh !important; /* adjust as needed */
+    }
+
+
+    .table::-webkit-scrollbar {
+      display:none; 
+    }
+
+   
+    .container-svg {
+      height:55vh; 
+      padding-top: 5px;
+      display: flex;
+      flex-basis: 65%;
+      justify-content: center;
+      align-self: center; 
+      overflow: visible; 
+    }
+
+    #svg-graph {
+      transform: scale(2);
+    }
+
+
+    .block-label {
+      font-family:'Montserrat', sans-serif;
+      font-size: 15px; /* Adjust as needed */
+    }
+
+    .votes-text {
+      font-family: 'Montserrat',sans-serif;
+    }
+
+    .hash-label {
+      font-family:'Montserrat', sans-serif;
+      font-size: 15px; /* Adjust as needed */
+    }
+
+    .mempool-label {
+      font-family: 'Montserrat',sans-serif;
+      font-size: 14px;
+    }
+
+    .mempool text {
+      font-family: 'Montserrat',sans-serif;
+      font-size: 20px;
+    }
+
+    .hash-element {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: bold;
+      color: #333;
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Update the styles for the generator and qMember elements */
+    .generator {
+      display: flex;
+      flex-direction: row;
+      align-items: center; /* Add this to center the content vertically */
+    }
+
+    .generator-svg {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex; /* Use flexbox */
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      flex-direction: column; /* Stack the content vertically */
+      text-align: center; /* Center the text inside the SVG */
+      margin-left: 20px;
+      width:100px;
+      height:50px;
+      border: 2px solid black;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: bold;
+      filter: drop-shadow(0 0 2px #969696);
+    }
+    .qMember {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: bold;
+      color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      stroke-width: 5px;
+      stroke: black;
+    }
+
+    .tx-label {
+      font-family:'Montserrat', sans-serif;
+      font-size: 15px; /* Adjust as needed */
+    }
+
+    .information, .explanation {
+      display: flex;
+      flex-basis: 35%;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-direction: column;  /* This will make the contents of the div stack vertically */
+    }
+
+    
+    .block {
+    
+      fill: white; 
+      stroke: #333333;
+      stroke-width: 2px;
+      rx: 2px;  /* Add horizontal radius for rounded edges */
+      transition: fill 0.3s ease;
+      
+    }
+
+    #blocks-svg {
+      filter: drop-shadow(0 0 2px #969696);
+      overflow: visible; 
+      
+    }
+
+    .step-buttons {
+      margin-top: 40px;
+    }
+
+
+
+
+/* CSS */
+    .step-buttons {
+      align-items: center;
+      appearance: none;
+      background-color: #FCFCFD;
+      border-radius: 4px;
+      border-width: 0;
+      box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+      box-sizing: border-box;
+      color: #36395A;
+      cursor: pointer;
+      display: inline-flex;
+      font-family: "JetBrains Mono",monospace;
+      height: 48px;
+      justify-content: center;
+      line-height: 1;
+      list-style: none;
+      overflow: hidden;
+      padding-left: 16px;
+      padding-right: 16px;
+      position: relative;
+      text-align: left;
+      text-decoration: none;
+      transition: box-shadow .15s,transform .15s;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      white-space: nowrap;
+      will-change: box-shadow,transform;
+      font-size: 18px;
+    }
+
+    .step-buttons:focus {
+      box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    }
+
+    .step-buttons:hover {
+      box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+      transform: translateY(-2px);
+    }
+
+    .step-buttons:active {
+      box-shadow: #D6D6E7 0 3px 7px inset;
+      transform: translateY(2px);
+    }
+        
+    
+    .block:hover {
+     
+      fill: green;
+      
+    }
+
+
+    .information {
+      
+      clear:both; 
+      font-family: 'Montserrat', sans-serif; 
+      font-size: 20px;
+  
+      width: 100%;
+    
+    }
+
+    .table-container {
+      height:100px;
+    }
+
+    #table-body {
+      overflow:scroll;
+    }
+    
+    .mt-5 {
+      margin-top: 2rem !important;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bg-dark{
+      background-color:black !important;
+    } 
+    .navbar-brand {
+      font-family: 'Montserrat',sans-serif;
+    }
+    
+    text {
+      font-family: 'Montserrat', sans-serif !important;
+      font-size: 10px;
+      user-select: none;  /* This will prevent text from being selected */
+      cursor: default;
+    }
+
+    .generator {
+      /* Adjust these values as needed */
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      visibility: hidden;  /* Hide the generator initially */
+     
+    }
+
+  
+
+  
+
+    
+  </style>
+</head>
+<body>
+  <!-- Responsive navbar-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">BLUEVISION</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="live.html">Live View</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Page content-->
+  <div class="container">
+    <div class="text-center mt-5">
+      <h1>bluevision edu</h1>
+    </div>
+    <div class="container-flex">
+      <div class="generator">
+        <svg id="generator-svg" width="150" height="100">
+          <!-- Generator code goes here -->
+        </svg>
+        
+      </div>
+      <div class="information">
+        <script>
+          // Parse the URL parameters
+          const htmlParams = new URLSearchParams(window.location.search);
+          const blockNumHtml = htmlParams.get('block');
+        
+          // Load the data
+          fetch('network.ndjson')
+            .then(response => response.text())
+            .then(text => {
+              // Parse the data
+              const blockData = text.split('\n').filter(Boolean).map(JSON.parse);
+              const block = blockData.find(b => b.block == blockNum);
+        
+              if (block) {
+                // Update the information div
+                const infoDiv = document.querySelector('.information');
+                infoDiv.innerHTML = `<p>Welcome to bluevision edu, where you chose block ${blockNum} with a hash of <span class="hash-value">${block.hash.substring(0, 4)}</span> and ${block.tx_count} transactions inside of it!<br><br>Block ${blockNum} is what all the nodes in the network agreed upon when creating the block for the ledger. You can also see the other blocks that the nodes have added up to this point as well.<br><br>bluevision edu will guide you through the process of creating block ${parseInt(blockNum)+1} and adding it to the blockchain. The first step in creating the next block is to figure out who the quorum members are in constructing ${parseInt(blockNum) + 1}.<br><br>When you are ready, press the derive quorum button in order to find the quorum members!</p>`;
+                
+                // Create the button
+                const button = document.createElement("button");
+                button.className = "step-buttons";
+                button.id = "derive-quorum";
+                button.innerHTML = "Derive Quorum";
+                
+                // Add event listener to the button
+                button.addEventListener('click', () => deriveQuorum()); 
+        
+                // Append the button to the div
+                infoDiv.appendChild(button);
+              } else {
+                console.log(`Block ${blockNum} not found`);
+              }
+            })
+            .catch(console.error);
+            
+        </script>
+        <script src="deriveQuorum.js"></script>
+      </div>
+      <div class="container-svg">
+        <svg id="graph-svg">
+          <defs>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+        </svg>
+      </div>
+    </div>
+    <div class="container-svg">
+      <svg id="blocks-svg">
+      </svg>
+    </div>
+    
+    
+  <!-- Include D3 and the graph.js file -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="consensusGraph.js"></script>
+  <script src="consensusBlockchain.js"></script>
+  <script src="deriveQuorum.js"></script>
+  <script src="formQuorum.js"></script>
+  <script src="compileMempool.js"></script>
+  <script src="constructBlock.js"></script>
+  <script src="signBlock.js"></script>
+  <script src="voteBlock.js"></script>
+  <script src="sendBlock.js"></script>
+  <script src="addBlock.js"></script>
+  <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Core theme JS-->
+  <script src="https://cdn.jsdelivr.net/gh/jettcblack/bluevision-css@main/scripts.js"></script>
+</body>
+</html>
+
+

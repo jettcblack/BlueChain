@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>bluevision</title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="https://cdn.jsdelivr.net/gh/jettcblack/bluevision-css@main/styles.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <style>
+
+
+.dark-theme {
+    --bs-dark: #1d1e22;
+    --bs-gray: #f0f0f0;
+}
+
+body.dark-theme {
+    background-color: var(--bs-dark);
+    color: var(--bs-gray);
+}
+
+
+/* Additional component styling for dark theme */
+body.dark-theme .table, body.dark-theme .key-panel, body.dark-theme .container-svg {
+    background-color: var(--bs-dark);
+    color: var(--bs-gray);
+}
+    :root {
+        --color-bg-dark: #222;
+        --color-text-light: #f1f1f1;
+        --color-text-dark: #111;
+        --color-accent: #00e4ff;
+    }
+
+    [data-theme="dark"] {
+        background-color: var(--color-bg-dark);
+        color: var(--color-text-light);
+    }
+
+    [data-theme="dark"] #linkid [Attributes] {
+      stroke: #fff !important;
+    }
+
+    [data-theme="dark"] body,
+    [data-theme="dark"] .bg-dark,
+    [data-theme="dark"] .navbar,
+    [data-theme="dark"] .table,
+    [data-theme="dark"] .container,
+    [data-theme="dark"] .key-panel,
+    [data-theme="dark"] .navbar-dark {
+        background-color: var(--color-bg-dark) !important;
+        color: var(--color-text-light) !important;
+    }
+
+    [data-theme="dark"] .navbar-brand,
+    [data-theme="dark"] .nav-link,
+    [data-theme="dark"] .dropdown-item,
+    [data-theme="dark"] h1,
+    [data-theme="dark"] .block,
+    [data-theme="dark"] text {
+        color: var(--color-text-light) !important;
+    }
+
+    [data-theme="dark"] .navbar-toggler-icon {
+        filter: invert(1);
+    }
+
+    [data-theme="dark"] .table thead th {
+        border-bottom: 1px solid var(--color-text-light) !important;
+    }
+
+    [data-theme="dark"] .key-panel table {
+        border-bottom: 1px solid var(--color-text-light) !important;
+    }
+
+    [data-theme="dark"] .table td,
+    [data-theme="dark"] .table th {
+        border-top: 1px solid var(--color-text-light) !important;
+    }
+
+    [data-theme="dark"] .dropdown-menu {
+        background-color: var(--color-bg-dark) !important;
+        color: var(--color-text-light) !important;
+    }
+    body {
+      overflow:hidden;
+      background-color: #f0f0f0;
+    }
+   /* .links line {
+      stroke: grey; 
+      stroke-opacity: 0.6;
+    } */ 
+    
+    .nodes circle {
+      stroke: #fff;
+      stroke-width: 1.5px;
+      filter: drop-shadow(0 0 3px #111111);
+    }
+
+    .container-flex {
+      display: flex;
+      height: 50vh; /* adjust as needed, this is just an example */
+    }
+
+    @media (min-width: 576px) {
+      .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 768px) {
+      .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 992px) {
+      .container-lg, .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 1200px) {
+      .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+    @media (min-width: 1400px) {
+      .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: none;
+      }
+    }
+
+    .text-center {
+      margin-top:1rem; 
+    }
+
+    
+    .container {
+      padding-left: 100px;
+      padding-right: 100px;
+    }
+
+    .container-flex {
+      display: grid !important; 
+      grid-template-columns: 1fr 2fr 1fr !important; /* This will give two small spaces at the sides and a large space in the middle */
+      height: 60vh !important; /* adjust as needed */
+    }
+
+    .table {
+      width: 100%;
+      grid-column: 1 !important; /* position it in the first column */
+      overflow:auto !important; /* makes it scrollable if the content overflows */
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .table::-webkit-scrollbar {
+      display:none; 
+    }
+
+    #transactionTable {
+      width:100% !important; 
+    }
+
+    .container-svg {
+      grid-column: 2 !important; /* position it in the second (middle) column */
+    }
+
+        .key-panel {
+        display: grid; 
+        flex-direction: column;
+        justify-content: center;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: bold;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+
+      .key-panel table {
+          grid-column: 3 !important; 
+          width: 100%;
+          text-align: center;
+          border-collapse: collapse;
+      }
+
+      .key-panel th, .key-panel td {
+          padding: 10px;
+      }
+
+      .key-panel td svg {
+          margin: auto;  /* Center the gradient rectangles in their cells */
+      }
+
+      .key-panel thead {
+          border-bottom: 1px solid black; /* Add a 2px solid black line under the table headers */
+      }
+
+    .container-svg {
+      height:55vh; 
+      padding-top: 5px;
+      display: flex;
+      justify-content: center;
+      align-self: center; 
+      overflow: visible; 
+    }
+
+    #svg-graph {
+      transform: scale(2);
+    }
+
+
+
+    
+    .block {
+      fill: white; 
+      stroke: #333333;
+      stroke-width: 2px;
+      rx: 2px;  /* Add horizontal radius for rounded edges */
+      transition: fill 0.3s ease;
+    }
+
+    #blocks-svg {
+      filter: drop-shadow(0 0 2px #969696);
+      overflow: visible; 
+      
+    }
+    
+    
+    .block:hover {
+      cursor: pointer;
+      /*transform: scale(1.1); */
+      fill: #D6EEFF; 
+      transition: all ease-in-out .3s;
+    }
+
+    .block-label {
+      font-family:'Montserrat', sans-serif;
+      font-size: 15px; /* Adjust as needed */
+    }
+
+    .hash-label {
+      font-family:'Montserrat', sans-serif;
+      font-size: 15px; /* Adjust as needed */
+    }
+
+    .tx-label {
+      font-family:'Montserrat', sans-serif;
+      font-size: 15px; /* Adjust as needed */
+    }
+
+
+
+    .table-container {
+      height:100px;
+    }
+
+    #table-body {
+      overflow:scroll;
+    }
+    
+    .mt-5 {
+      margin-top: 2rem !important;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .bg-dark{
+      background-color:black !important;
+    } 
+    .navbar-brand {
+      font-family: 'Montserrat',sans-serif;
+    }
+    
+    text {
+      font-family: 'Montserrat', sans-serif !important;
+      font-size: 10px;
+      user-select: none;  /* This will prevent text from being selected */
+      cursor: default;
+    }
+
+    
+  </style>
+</head>
+<body>
+  <!-- Responsive navbar-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">BLUEVISION</a>
+     <!----<button id="themeToggle">Toggle Dark Mode</button>-->
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Information</a>
+            <ul class="dropdown-menu dropdown-menu-end" style="width: 500px; padding: 50px;" aria-labelledby="navbarDropdown">
+        
+                <div class="row">
+                  <div class="col-sm-6">
+                    <h5>Transaction Table</h5>
+                    <p>Whenever you press launch network, light nodes on the network (not pictured) will submit transactions to the full nodes (black and blue circles) in order to fuel the network. Most recent transactions are shown at the top.</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <h5>Circular Network</h5>
+                    <p>This graph is a representation of the distributed, decentralized Bluechain peer-to-peer network. Regular full nodes are colored in black with quorum nodes at each block changing to blue.</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <h5>Legend</h5>
+                    <p>The legend shows the representation of messages sent between nodes on the network. Each color represents a different communication between nodes, with descriptions for each color.</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <h5>Blockchain</h5>
+                    <p>The blockchain is the data structure mutually held and agreed upon by the nodes in the network. Through communication of different messages, the nodes pack transactions and other data into blocks and link them together, making the blockchain immutable. Please click on any block in the chain in order to learn about the consensus process for blocks.</p>
+                  </div>
+                </div>
+              </ul>
+              
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Page content-->
+  <div class="container">
+    <div class="text-center mt-5">
+      <h1>bluechain</h1>
+    </div>
+    <div class="container-flex">
+      <div class="table">
+          <table id="transactionTable">
+              <thead>
+                  <tr>
+                      <th>tx</th>
+                      <th>from</th>
+                      <th>to</th>
+                      <th>amount</th>
+                  </tr>
+              </thead>
+              <tbody id="tableBody">
+                  <!-- Rows will be inserted here -->
+              </tbody>
+          </table>
+          <script>
+            let lastLine = 0;
+            
+            function updateTable() {
+                fetch('transactions.ndjson')
+                    .then(response => response.text())
+                    .then(text => {
+                        const lines = text.split('\n').filter(Boolean);  // Split by lines and remove any empty ones
+                        const tableBody = document.getElementById('tableBody');
+            
+                        // Only process lines that haven't been added to the table yet
+                        for (let i = lastLine; i < lines.length; i++) {
+                            const obj = JSON.parse(lines[i]);
+                            const row = document.createElement('tr');
+                            //row.style.opacity = "0"; // Initially set opacity to 0
+                            row.innerHTML = `
+                                <td>${obj.transaction}</td>
+                                <td>${obj.from}</td>
+                                <td>${obj.to}</td>
+                                <td>${obj.amount}</td>
+                            `;
+                            // If there is a first child, insert before it, otherwise appendChild (which will happen when the table is initially empty)
+                            if (tableBody.firstChild) {
+                                tableBody.insertBefore(row, tableBody.firstChild);
+                            } else {
+                                tableBody.appendChild(row);
+                            }
+
+                            const rowLimit = 20;  // Adjust this as needed
+                            if (tableBody.childElementCount > rowLimit) {
+                                tableBody.removeChild(tableBody.lastChild);
+                            }
+                            // Use setTimeout to delay the start of the transition slightly, giving the page time to add the new row
+                           /* setTimeout(() => {
+                                row.style.transition = "opacity 5s"; // Set transition effect
+                                row.style.opacity = "1"; // Transition to full opacity
+                            }, 10);*/
+                        }
+                        // Update lastLine so we don't re-process old lines next time
+                        lastLine = lines.length;
+                    })
+                    .catch(error => console.error(error));
+            }
+            
+            // Update the table immediately, and then every 5 seconds
+            updateTable();
+            setInterval(updateTable, 10000);
+            </script>
+            
+      </div>
+    <div class="container-svg">
+      <svg id="graph-svg">
+        <defs>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+          </filter>
+      </defs>
+      </svg>
+    </div>
+    <div class="key-panel">
+      <table>
+        <thead>
+          <tr>
+            <th>message</th>
+            <th>color</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>add transaction</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#3FD02C"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>form quorum</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#3A86FF"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>send mempool</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#A140B3"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>sign block</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#FB5607">
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>send block</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#B82538"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+            <td>ping</td>
+            <td>
+              <svg width="20" height="20">
+                <rect width="20" height="20" fill="#FFBE0B"/>
+              </svg>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    </div>
+    <div class="container-svg">
+      <svg id="blocks-svg">
+      </svg>
+    </div>
+  </div>
+  
+
+  <!-- Include D3 and the graph.js file -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="graph.js"></script>
+  <script src="blockchain.js"></script>
+  
+
+  <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Core theme JS-->
+  <script src="https://cdn.jsdelivr.net/gh/jettcblack/bluevision-css@main/scripts.js"></script>
+  <script>
+    document.getElementById('themeToggle').addEventListener('click', function() {
+      document.body.classList.toggle('dark-theme');
+    });
+    </script>
+</body>
+</html>

@@ -2,6 +2,8 @@ package node.blockchain.defi;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,6 +19,13 @@ import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.regex.Pattern;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
+
+import node.blockchain.Transaction;
 import node.blockchain.merkletree.MerkleTreeProof;
 import node.communication.Address;
 import node.communication.messaging.Message;
@@ -122,6 +131,11 @@ public class Wallet {
                 Wallet wallet = new Wallet(port);
                 wallet.test = true;
                 wallet.testNetwork(Integer.valueOf(args[1]));
+                System.exit(0); // We just test then exit
+            }else if(args[0].equals("-sim")){
+                Wallet wallet = new Wallet(port);
+                wallet.test = true;
+                wallet.simulateNetwork(Integer.valueOf(args[1]));
                 System.exit(0); // We just test then exit
             }
         }
@@ -251,6 +265,7 @@ public class Wallet {
         }
 
         DefiTransaction newTransaction = new DefiTransaction(to, myPublicKeyString, amount, String.valueOf(System.currentTimeMillis()));
+      
         String UID = newTransaction.getUID();
         byte[] signedUID = DSA.signHash(UID, pk);
         newTransaction.setSigUID(signedUID);
@@ -271,6 +286,7 @@ public class Wallet {
             oout.flush();
             Thread.sleep(1000);
             s.close();
+            
             if(!this.test) System.out.println("Full node: " + address);
         } catch (IOException e) {
             System.out.println("Full node at " + address + " appears down.");
@@ -347,6 +363,8 @@ public class Wallet {
             KeyPair newKeyPair = DSA.generateDSAKeyPair();
             Account newAccount = new Account(nickname, newKeyPair);
             
+            newAccount.updateBalance(100); // Starts every account with a balance of 100 
+
             for(Account account : accounts){
                 if(account.getNickname().equals(nickname)){
                     System.out.println("An account with this nickname already exists. Try a new one.");
@@ -386,12 +404,74 @@ public class Wallet {
         }
 
         DefiTransaction newTransaction = new DefiTransaction(to, myPublicKeyString, amount, String.valueOf(System.currentTimeMillis()));
+        // Implementing functionality to write to transaction file as transactions are submitted 
+   
+        JsonObjectBuilder txData = Json.createObjectBuilder();  
+        
+
+        txData.add("transaction", newTransaction.toString())
+            .add("to", to.substring(to.length() - 5, to.length() - 1))
+            .add("from",  myPublicKeyString.substring(myPublicKeyString.length() - 5, myPublicKeyString.length() - 1))
+            .add("amount",String.valueOf(amount)); 
+        
+        
+        chosenAccount.updateBalance(chosenAccount.getBalance() - amount);
+        
+        if (chosenAccount.getBalance() < amount) {
+            txData.add("valid","no");
+        } else {
+            txData.add("valid","yes"); 
+        }
+    
+
+
+        try (OutputStream os = new FileOutputStream("src/main/resources/transactions.ndjson",true);
+            JsonWriter jsonWriter = Json.createWriter(os)) {
+            jsonWriter.writeObject(txData.build());
+            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.ndjson", true); 
+            fileWriter.write("\n");
+            fileWriter.close(); 
+            jsonWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String UID = newTransaction.getUID();
         byte[] signedUID = DSA.signHash(UID, pk);
         newTransaction.setSigUID(signedUID);
 
         for(Address address : fullNodes){
             submitTransaction(newTransaction, address);
+        }
+    }
+
+    /* Adding method simulateNetwork to simulate actual network traffic on BlueChain, will randomize accounts sending transactions */
+    private void simulateNetwork(int j) {
+        System.out.println("Beginning Simulation");
+
+        try {
+            testAddAccount("Satoshi");
+            int randAccount; 
+            System.out.print("[");
+            for (int i = 0; i < j; i++) {
+                testAddAccount(String.valueOf(i));
+            }
+            for (int i = 0; i < j; i++) {
+                randAccount = (int) (Math.random() * (j + 1)); 
+                System.out.print("#"); 
+                Thread.sleep(2500);
+                testSubmitTransaction(String.valueOf(i), DSA.bytesToString(accounts.get(randAccount).getKeyPair().getPublic().getEncoded()),(int)(Math.random() * 100));
+            }
+            System.out.print("]");
+            System.out.println("Sleeping wallet for last minute updates...");
+            Thread.sleep(25000);
+            
+            for (Account account: accounts) {
+                System.out.println("Account: " + account.getNickname() + "  Balance: " + account.getBalance()); 
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

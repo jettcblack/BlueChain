@@ -40,7 +40,7 @@ public class NetworkLauncher {
             Properties prop = new Properties();
             prop.load(fileInputStream);
 
-            int numNodes = Integer.parseInt(prop.getProperty("NUM_NODES"));
+            int numNodes = Integer.parseInt(prop.getProperty("NUM_NODES")); 
             int maxConnections = Integer.parseInt(prop.getProperty("MAX_CONNECTIONS"));
             int minConnections = Integer.parseInt(prop.getProperty("MIN_CONNECTIONS"));
             int startingPort = Integer.parseInt(prop.getProperty("STARTING_PORT"));
@@ -61,7 +61,9 @@ public class NetworkLauncher {
             }
 
             for (int i = startingPort; i < startingPort + numNodes; i++) {
-                nodes.add(new Node(use, i, maxConnections, minConnections, numNodes, quorumSize, minimumTransactions, debugLevel));
+                if (i == ((startingPort + numNodes) - 1)) {
+                    nodes.add(new Node(use, i, maxConnections, minConnections, numNodes, quorumSize, minimumTransactions, debugLevel,true));
+                } else { nodes.add(new Node(use, i, maxConnections, minConnections, numNodes, quorumSize, minimumTransactions, debugLevel,false));} 
             }
 
 
